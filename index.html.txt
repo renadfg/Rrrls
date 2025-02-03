@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام اقتراح الطعام الذكي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            direction: rtl;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            margin: 0;
+        }
+
+        .form-section, .recommendations {
+            padding: 20px;
+            margin: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        form label {
+            font-weight: bold;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>نظام اقتراح الطعام الذكي</h1>
+        <p>أدخل معلوماتك الشخصية للحصول على اقتراحات طعام مخصصة.</p>
+    </header>
+
+    <section class="form-section">
+        <h2>بيانات المستخدم</h2>
+        <form id="foodForm">
+            <label for="age">العمر:</label>
+            <input type="number" id="age" required><br><br>
+
+            <label for="weight">الوزن (بالكيلو):</label>
+            <input type="number" id="weight" required><br><br>
+
+            <label for="goal">هدفك الصحي:</label>
+            <select id="goal">
+                <option value="lose-weight">فقدان الوزن</option>
+                <option value="gain-muscle">بناء العضلات</option>
+                <option value="maintain-health">الحفاظ على الصحة</option>
+            </select><br><br>
+
+            <label for="diet">نوع النظام الغذائي:</label>
+            <select id="diet">
+                <option value="normal">عادي</option>
+                <option value="keto">كيتو</option>
+                <option value="vegan">نباتي</option>
+            </select><br><br>
+
+            <button type="submit">احصل على اقتراحات</button>
+        </form>
+    </section>
+
+    <section id="recommendations" class="recommendations">
+        <h2>اقتراحات الطعام:</h2>
+        <ul id="mealList"></ul>
+    </section>
+
+    <script>
+        document.getElementById('foodForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // جمع البيانات من النموذج
+            const age = parseInt(document.getElementById('age').value);
+            const weight = parseInt(document.getElementById('weight').value);
+            const goal = document.getElementById('goal').value;
+            const diet = document.getElementById('diet').value;
+
+            // بناء المنطق لتقديم الاقتراحات
+            const recommendations = getFoodRecommendations(age, weight, goal, diet);
+
+            // عرض الاقتراحات على الصفحة
+            displayRecommendations(recommendations);
+        });
+
+        // دالة تقديم اقتراحات الطعام بناءً على المدخلات
+        function getFoodRecommendations(age, weight, goal, diet) {
+            let meals = [];
+
+            // منطق بسيط يعتمد على الأهداف
+            if (goal === 'lose-weight') {
+                meals.push('سلطة خضار مع دجاج مشوي');
+                meals.push('شوربة عدس');
+            } else if (goal === 'gain-muscle') {
+                meals.push('صدر دجاج مع أرز بني');
+                meals.push('سمك مشوي مع خضروات');
+            } else if (goal === 'maintain-health') {
+                meals.push('سلطة التونة');
+                meals.push('كوب من الزبادي اليوناني مع المكسرات');
+            }
+
+            // إضافة نوع النظام الغذائي
+            if (diet === 'keto') {
+                meals = meals.map(meal => meal + " (كيتو)");
+            } else if (diet === 'vegan') {
+                meals = meals.map(meal => meal + " (نباتي)");
+            }
+
+            return meals;
+        }
+
+        // دالة لعرض الاقتراحات على الصفحة
+        function displayRecommendations(meals) {
+            const mealList = document.getElementById('mealList');
+            mealList.innerHTML = '';  // تفريغ القائمة السابقة
+
+            meals.forEach(meal => {
+                const li = document.createElement('li');
+                li.textContent = meal;
+                mealList.appendChild(li);
+            });
+        }
+    </script>
+</body>
+</html>
